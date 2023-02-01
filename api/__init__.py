@@ -3,6 +3,7 @@ from database import models
 from .utils import Register
 from typing import Dict
 
+import logging
 
 bp = Blueprint('api', __name__, url_prefix='/api/v1')
 
@@ -47,7 +48,7 @@ def get_leaders(level):
 def get_questions(level: str, q_set: str) -> Dict:
     questions = models.get_questions(level, q_set)
 
-    result = {'timer': 45, 'questions': [{'question_id': i[0], i[1]: i[2:6]} for i in questions]}
+    result = {'timer': 45, 'questions': [{'question_id': i[0], 'question': i[1], 'answers':i[2:6]} for i in questions]}
 
     return result
 
@@ -68,3 +69,5 @@ def get_result_and_end(user_id: int, corrects: int, level: str, q_set: str) -> D
     result = {'status': 1, 'correct_answers': corrects, 'position_on_top': position}
 
     return result
+
+
